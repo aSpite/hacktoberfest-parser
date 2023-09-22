@@ -1,0 +1,10 @@
+node_modules
+.idea
+
+.env
+database.db
+issues.json
+package-lock.json
+
+*.sqlite
+*.txt
