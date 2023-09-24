@@ -79,8 +79,7 @@ export async function parseIssues(db: MyDatabase, manually = false, chatID?: num
 
     fs.writeFileSync('logs.txt', `${getCurrentTimeFormatted()} [${LOG_PREFIXES.parser_ton}] [${LOG_TYPES.info}]: Starting parse issues for TON\n`, {flag: 'a'});
     const tonRepos = await github.request('GET /search/repositories', {
-        // TODO: Change topic
-        q: `topic:${config.overallTopic}`,
+        q: `topic:${config.tonTopic}`,
         sort: 'updated',
         per_page: 100
     });
@@ -123,7 +122,8 @@ export async function parseIssues(db: MyDatabase, manually = false, chatID?: num
     } else {
         const message = getMessage(issues);
         await bot.bot.api.sendMessage(chatID, message, {
-            parse_mode: 'HTML'
+            parse_mode: 'HTML',
+            disable_web_page_preview: true
         });
     }
 }

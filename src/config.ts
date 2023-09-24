@@ -1,7 +1,7 @@
 export const CONFIG_DEFAULT_VALUES = {
     repo_criteria_stars: '1000',
     repo_criteria_created: '2021-01-01',
-    issue_criteria_created: '2021-01-01',
+    issue_criteria_created: '2023-09-01',
     overall_topic: 'hacktoberfest',
     ton_topic: 'hack-ton-berfest',
     hours_to_send: '16',
@@ -24,3 +24,5 @@ export const LOG_TYPES = {
     warning: 'warning',
     error: 'error'
 }
+
+export const ADMIN_ID = 387992598;

@@ -1,4 +1,4 @@
-import {Bot, Context, GrammyError, HttpError, lazySession, NextFunction, SessionFlavor} from "grammy";
+import {Bot, Context, GrammyError, HttpError, lazySession, SessionFlavor} from "grammy";
 import {Conversation, ConversationFlavor, conversations, createConversation} from "@grammyjs/conversations";
 import fs from "fs";
 import {LOG_PREFIXES, LOG_TYPES} from "../../config";
@@ -17,6 +17,7 @@ import {MyDatabase} from "../../db/database";
 import { run } from '@grammyjs/runner';
 import {getCurrentTimeFormatted} from "../../utils/utils";
 import {db} from "../../index";
+import {parseIssues} from "../parser";
 
 interface SessionData {
     stage: string;
@@ -72,7 +73,13 @@ export class MyBot {
         this.bot.use(createConversation(changeTGGroup, 'change_tg_group'));
         this.bot.use(createConversation(changeDiscordChannel, 'change_discord_channel'));
         this.bot.use(createConversation(changeAdmin, 'change_admin'))
-        this.bot.command('start', ctx => ctx.reply('Hello!'));
+        this.bot.command('start', async (ctx) => {
+            await ctx.reply('Hello!')
+            const user = await db.isUserExists(ctx.from.id);
+            if(!user) {
+                await db.addUser(ctx.from.id);
+            }
+        });
         this.bot.command('config', async ctx => {
             const config = await db.getConfig();
             await ctx.reply(`⚙️ <b>Current config</b>:
@@ -159,7 +166,7 @@ export class MyBot {
 
         this.bot.command('parse', async ctx => {
             await ctx.reply('Parsing started');
-
+            await parseIssues(db, true, ctx.from.id);
         });
 
         this.bot.command('admins', async ctx => {

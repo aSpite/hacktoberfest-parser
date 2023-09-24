@@ -1,6 +1,6 @@
 import {Database, open} from "sqlite";
 import sqlite3 from 'sqlite3';
-import {CONFIG_DEFAULT_VALUES, LOG_PREFIXES, LOG_TYPES} from "../config";
+import {ADMIN_ID, CONFIG_DEFAULT_VALUES, LOG_PREFIXES, LOG_TYPES} from "../config";
 import {getCurrentTimeFormatted, sleep} from "../utils/utils";
 import {Issue} from "../modules/parser";
 import fs from "fs";
@@ -37,7 +37,7 @@ export class MyDatabase {
           await this.db.run(`
           CREATE TABLE IF NOT EXISTS users
           (
-              id          BIGSERIAL PRIMARY KEY,
+              id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
               telegram_id INTEGER   NOT NULL UNIQUE,
               is_admin    BOOLEAN   NOT NULL DEFAULT FALSE,
               created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -46,7 +46,7 @@ export class MyDatabase {
           await this.db.run(`
                 INSERT INTO users (telegram_id, is_admin)
                 VALUES ($1, $2)
-            `, 387992598, true);
+            `, ADMIN_ID, true);
       }
 
 

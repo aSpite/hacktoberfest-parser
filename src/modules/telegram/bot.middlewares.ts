@@ -20,7 +20,11 @@ export const onlyAdmin =
             if (!ctx.from?.id) {
                 return
             }
+            if(ctx.update.message.text === '/start') {
+                return next();
+            }
+
             const admins = await db.getAdmins()
-            if(admins.includes(ctx.from.id)) await next()
+            if(admins.includes(ctx.from.id)) return next()
             else return errorHandler?.(ctx)
         }

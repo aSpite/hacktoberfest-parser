@@ -4,7 +4,6 @@ import fs from "fs";
 import {db} from "../../index";
 import {LOG_PREFIXES, LOG_TYPES} from "../../config";
 import {getCurrentTimeFormatted, sleep} from "../../utils/utils";
-import {Issue} from "../parser";
 
 let flag = false;
 
@@ -32,6 +31,7 @@ export async function handleTGMessages(bot: Bot<MyContext>) {
         try {
             await bot.api.sendMessage(task, message, {
                 parse_mode: 'HTML',
+                disable_web_page_preview: true
             });
             fs.writeFileSync('logs.txt', `${getCurrentTimeFormatted()} [${LOG_PREFIXES.tg_bot}] [${LOG_TYPES.info}]: Message sent to ${task}\n`, {flag: 'a'});
         } catch(e) {
