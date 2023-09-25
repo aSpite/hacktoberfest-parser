@@ -20,7 +20,7 @@ export const onlyAdmin =
             if (!ctx.from?.id) {
                 return
             }
-            if(ctx.update.message.text === '/start') {
+            if(ctx.update.message?.text === '/start') {
                 return next();
             }
 
