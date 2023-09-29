@@ -50,11 +50,13 @@ export function getMessage(issues: any) {
     let message = `📌 New issues for HackToBerFest:\n\n`;
     for(const issue of issues) {
         if(issue.category !== 'overall') continue;
+        issue.title = issue.title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         message += `🔹 <a href="${issue.url}">${issue.title}</a>\n\n`;
     }
     message += `\n📌 New issues for HackTONBerFest:\n\n`;
     for(const issue of issues) {
         if(issue.category !== 'ton') continue;
+        issue.title = issue.title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         message += `🔹 <a href="${issue.url}">${issue.title}</a>\n\n`;
     }
 
