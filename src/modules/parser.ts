@@ -108,7 +108,11 @@ export async function parseIssues(db: MyDatabase, manually = false, chatID?: num
                 break;
         }
         if(issues.length == 10) {
-            // await db.addIssues(issues);
+            if(!manually)
+                await db.addIssues([
+                    issues[8],
+                    issues[9]
+                ]);
             break;
         }
     }
