@@ -23,11 +23,6 @@ interface SessionData {
     stage: string;
 }
 
-interface PreparedQuestion {
-    text: string;
-    buttons: any[];
-}
-
 export type MyContext = Context &
     SessionFlavor<SessionData> &
     ConversationFlavor & {
@@ -74,11 +69,19 @@ export class MyBot {
         this.bot.use(createConversation(changeDiscordChannel, 'change_discord_channel'));
         this.bot.use(createConversation(changeAdmin, 'change_admin'))
         this.bot.command('start', async (ctx) => {
-            await ctx.reply('Hello!')
+            await ctx.replyWithAnimation('CgACAgIAAxkBAAONZS2OW3EgdAQ4Gn2s_FPqP6j_Jg8AAgM-AAJDm3BJtmI0Vik6cdUwBA', {
+                    caption: `👋 Hello, ${ctx.from.first_name}! I'm Hacktoberfest 2023 bot.`
+                }
+            )
             const user = await db.isUserExists(ctx.from.id);
             if(!user) {
                 await db.addUser(ctx.from.id);
             }
+        });
+
+        this.bot.on('message:animation', async ctx => {
+            console.log(ctx.message.animation)
+            await ctx.reply(`ID: ${ctx.message.animation.file_id}`);
         });
         this.bot.command('config', async ctx => {
             const config = await db.getConfig();

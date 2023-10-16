@@ -1,10 +1,10 @@
-import {Bot, GrammyError} from "grammy";
+import {Bot} from "grammy";
 import {MyContext} from "../telegram/bot";
 import {db} from "../../index";
 import fs from "fs";
 import {getCurrentTimeFormatted, sleep} from "../../utils/utils";
 import {LOG_PREFIXES, LOG_TYPES} from "../../config";
-import {Client, DiscordRPCServer} from "discord.js-selfbot-v13";
+import {Client, MessageAttachment} from "discord.js-selfbot-v13";
 
 let flag = false;
 export async function handleDiscordMessages(bot: Bot<MyContext>, client: Client<boolean>) {
@@ -26,22 +26,29 @@ export async function handleDiscordMessages(bot: Bot<MyContext>, client: Client<
     }
 
     const issues = JSON.parse(fs.readFileSync('issues.json', 'utf8'));
-    let message = `📌 New issues for HackToBerFest:\n\n`;
-    for(const issue of issues) {
-        if(issue.category !== 'overall') continue;
-        message += `🔹 [${issue.title}](<${issue.url}>)\n`;
-    }
-    message += `\n📌 New issues for HackTONBerFest:\n\n`;
+
+    let message = `📌 New issues for Hacktoberfest 2023:\n\n`;
+    message += '🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻\n\n';
     for(const issue of issues) {
         if(issue.category !== 'ton') continue;
         message += `🔹 [${issue.title}](<${issue.url}>)\n`;
     }
 
+    for(const issue of issues) {
+        if(issue.category !== 'overall') continue;
+        message += `🔹 [${issue.title}](<${issue.url}>)\n`;
+    }
+
+
     for(const task of tasks) {
         try {
             const channel = await client.channels.fetch(task);
             if(channel.isText()) {
-                const replyMessage = await channel.send(message);
+                MessageAttachment
+                await channel.send({
+                    content: message,
+                    files: [new MessageAttachment('ff.jpg')]
+                });
                 fs.writeFileSync('logs.txt', `${getCurrentTimeFormatted()} [${LOG_PREFIXES.discord_bot}] [${LOG_TYPES.info}]: Message sent to ${task}\n`, {flag: 'a'});
             } else {
                 await bot.api.sendMessage(config.serviceChatID, `❌ Error while sending message to ${task}: Channel is not a text channel.`);

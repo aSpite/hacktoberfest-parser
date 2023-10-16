@@ -29,9 +29,9 @@ export async function handleTGMessages(bot: Bot<MyContext>) {
     const message = getMessage(issues);
     for(const task of tasks) {
         try {
-            await bot.api.sendMessage(task, message, {
+            await bot.api.sendAnimation(task, 'CgACAgIAAxkBAAONZS2OW3EgdAQ4Gn2s_FPqP6j_Jg8AAgM-AAJDm3BJtmI0Vik6cdUwBA', {
                 parse_mode: 'HTML',
-                disable_web_page_preview: true
+                caption: message,
             });
             fs.writeFileSync('logs.txt', `${getCurrentTimeFormatted()} [${LOG_PREFIXES.tg_bot}] [${LOG_TYPES.info}]: Message sent to ${task}\n`, {flag: 'a'});
         } catch(e) {
@@ -47,18 +47,18 @@ export async function handleTGMessages(bot: Bot<MyContext>) {
 }
 
 export function getMessage(issues: any) {
-    let message = `📌 New issues for HackToBerFest:\n\n`;
-    for(const issue of issues) {
-        if(issue.category !== 'overall') continue;
-        issue.title = issue.title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        message += `🔹 <a href="${issue.url}">${issue.title}</a>\n\n`;
-    }
-    message += `\n📌 New issues for HackTONBerFest:\n\n`;
+    let message = `📌 <b>New issues for Hacktoberfest 2023</b>:\n\n`;
+    message += '🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻🧑‍💻\n\n';
     for(const issue of issues) {
         if(issue.category !== 'ton') continue;
         issue.title = issue.title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         message += `🔹 <a href="${issue.url}">${issue.title}</a>\n\n`;
     }
 
+    for(const issue of issues) {
+        if(issue.category !== 'overall') continue;
+        issue.title = issue.title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        message += `🔹 <a href="${issue.url}">${issue.title}</a>\n\n`;
+    }
     return message;
 }

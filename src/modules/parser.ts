@@ -125,9 +125,9 @@ export async function parseIssues(db: MyDatabase, manually = false, chatID?: num
         await db.startSending();
     } else {
         const message = getMessage(issues);
-        await bot.bot.api.sendMessage(chatID, message, {
+        await bot.bot.api.sendAnimation(chatID, 'CgACAgIAAxkBAAONZS2OW3EgdAQ4Gn2s_FPqP6j_Jg8AAgM-AAJDm3BJtmI0Vik6cdUwBA', {
             parse_mode: 'HTML',
-            disable_web_page_preview: true
+            caption: message,
         });
     }
 }
