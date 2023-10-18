@@ -2,7 +2,7 @@ import {MyConservation, MyContext} from "./bot";
 import fs from "fs";
 import {getCurrentTimeFormatted} from "../../utils/utils";
 import {LOG_PREFIXES, LOG_TYPES} from "../../config";
-import {bot, db, discord} from "../../index";
+import {db, discord} from "../../index";
 
 export async function setStarCriteria(
     conversation: MyConservation,
@@ -252,7 +252,7 @@ export async function changeTGGroup(
                 continue;
             }
             try {
-                await bot.bot.api.getChat(groupId);
+                // await bot.bot.api.getChat(groupId);
                 await db.addTelegramGroup(groupId);
                 fs.writeFileSync('logs.txt', `${getCurrentTimeFormatted()} [${LOG_PREFIXES.tg_bot}] [${LOG_TYPES.info}]: Add tg group ${groupId}\n`, {flag: 'a'});
                 await ctx.reply('Added');

@@ -4,10 +4,11 @@ import fs from "fs";
 import {db} from "../../index";
 import {LOG_PREFIXES, LOG_TYPES} from "../../config";
 import {getCurrentTimeFormatted, sleep} from "../../utils/utils";
+import {TelegramClient} from "telegram";
 
 let flag = false;
 
-export async function handleTGMessages(bot: Bot<MyContext>) {
+export async function handleTGMessages(bot: Bot<MyContext>, userBot: TelegramClient) {
     const tasks = await db.getTelegramTasks();
     const config = await db.getConfig();
     if(tasks.length === 0) {
@@ -29,10 +30,12 @@ export async function handleTGMessages(bot: Bot<MyContext>) {
     const message = getMessage(issues);
     for(const task of tasks) {
         try {
-            await bot.api.sendAnimation(task, 'CgACAgIAAxkBAAONZS2OW3EgdAQ4Gn2s_FPqP6j_Jg8AAgM-AAJDm3BJtmI0Vik6cdUwBA', {
-                parse_mode: 'HTML',
+            await userBot.sendFile(task, {
+                file: 'ff.gif',
+                parseMode: 'html',
                 caption: message,
-            });
+            })
+
             fs.writeFileSync('logs.txt', `${getCurrentTimeFormatted()} [${LOG_PREFIXES.tg_bot}] [${LOG_TYPES.info}]: Message sent to ${task}\n`, {flag: 'a'});
         } catch(e) {
             if(e instanceof GrammyError) {
